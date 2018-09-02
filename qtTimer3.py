@@ -48,8 +48,8 @@ class StopWatch(Qt.QMainWindow):
 
     def keyPressEvent(self,event):
         if event.key() == Qt.Qt.Key_Escape:
-            self.rf.close()
-            self.wf.close()
+            # self.rf.close()
+            # self.wf.close()
             self.close()
         elif event.key() == Qt.Qt.Key_R:
             self.do_reset()
@@ -153,10 +153,17 @@ class StopWatch(Qt.QMainWindow):
         self.lapTime=[0,0,0]
 
     def do_save(self): #結果をcsvファイルに書き込み
+        print(self.lapTime)
         for i in range(3):
             words=self.header.split(',')
             writeWord="%s,%s,%s,%s,%d,%6.2f"%(int(words[0]),str(words[1]),str(words[2]),str(words[3]),1,self.lapTime[i])
             self.writer.writerow(writeWord.split(','))
+
+    def close(self):
+        self.do_reset()
+        self.rf.close()
+        self.wf.close()
+        super.close()
 
 if __name__ == '__main__':
     app=Qt.QApplication(sys.argv)
