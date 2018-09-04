@@ -27,7 +27,6 @@ class StopWatch(Qt.QMainWindow):
         self.afterSenceCount=0
         self.sanpunStart=0
 
-
         filename="./out/%s%d.csv"%(sys.argv[2],int(time.time())%100000)
         self.rf=open(sys.argv[1],"r",encoding="utf-8") #csvファイルの読み込み
         self.wf=open(filename,"w", newline='')
@@ -40,19 +39,11 @@ class StopWatch(Qt.QMainWindow):
         self.start.clicked.connect(self.do_start)
         self.save.clicked.connect(self.do_save)
 
-        # self.setAutoFillBackground(True)
-        # p = self.palette()
-        # p.setColor(self.backgroundRole(), QColor(255,255,255))
-        # self.setPalette(p)
-
         self.timer=Qt.QTimer() #アニメーション(7セグ表示部分)用
         self.timer.setInterval(TICK_TIME)
         self.timer.timeout.connect(self.tick)
         self.timer.start()
-        self.key.deselect()
-        self.group.deselect()
-        self.name.deselect()
-        self.machineName.deselect()
+
         self.timeLimit.setValue(0)
 
         # csvファイルの1行1列の数字にゴミが入るので、回避代わりに(誰かデバッグして)
