@@ -1,4 +1,4 @@
-# Laptimer
+﻿# Laptimer
 
 関西合同ロボコン2018のために作られた、ライントレーサ用のラップタイマーです。
 https://github.com/baoboa/pyqt5/blob/master/examples/widgets/digitalclock.py
@@ -31,3 +31,6 @@ https://github.com/baoboa/pyqt5/blob/master/examples/widgets/digitalclock.py
     -1｜dummy｜dummy｜dummy ｜dummy
 
 RaspiのためのADCが身近になかったので、Nucleoで値を取っていますが、所持している方はそっちでやったほうが楽でしょう。
+
+読み込めるCSVファイルの文字コードはunicodeです。
+Excelで作成したCSVファイルを、Visual Studio Codeなどを用いて、「utf-8 with BOM」形式で保存し、WinSCPやFTPPPなどでRasPiのほうに転送しましょう。
