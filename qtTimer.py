@@ -1,6 +1,7 @@
 import sys
 
 import RPi.GPIO as GPIO
+#from smbus2 import SMBusWrapper
 import smbus
 import time
 from PyQt5 import Qt
@@ -96,11 +97,11 @@ class StopWatch(Qt.QMainWindow):
             if self.driving:
                 i2c.write_byte(int(0x20),ord('g'))
                 self.getFromNucleo=i2c.read_byte(0x20)
-                print("%c, %d"%('g',self.getFromNucleo))
+                #print("%c, %d"%('g',self.getFromNucleo))
             else:
                 i2c.write_byte(int(0x20),ord('s'))
                 self.getFromNucleo=i2c.read_byte(0x20)
-                print("%c, %d"%('s',self.getFromNucleo))
+                #print("%c, %d"%('s',self.getFromNucleo))
              
             if self.getFromNucleo==0:
                 count+=1
@@ -158,7 +159,9 @@ class StopWatch(Qt.QMainWindow):
         self.runTime=0
         self.startTime=0
         self.finishTime=0
-        
+
+        i2c.write_byte(int(0x20),ord('r'))
+
         self.header=next(self.rf) 
         words=self.header.split(',')
 
@@ -211,8 +214,8 @@ class SubWindow(QtWidgets.QDialog):
         box.setSpacing(30)
         font1=QtGui.QFont()
         font2=QtGui.QFont()
-        font1.setPointSize(120)
-        font2.setPointSize(160)
+        font1.setPointSize(100)
+        font2.setPointSize(130)
 
 #        self.keyLabel=QLabel()
         self.collegeLabel=QLabel()
@@ -248,12 +251,45 @@ class SubWindow(QtWidgets.QDialog):
         self.nameLabel.setText(name)
         self.machineNameLabel.setText(machineName)
 
-
     def keyPressEvent(self,event):
         if(event.key()):
             self.close()
 
 if __name__ == '__main__':
+    print("Do you want to show sensors value? 0:no / 1:yes >")
+    a=int(input())
+    if(a==1):
+        while True:
+            i2c.write_byte(int(0x20),ord('a'))
+            #send = [ord("a"),1]
+            #i2c.write_i2c_block_data(0x20,0,send)
+            gets=i2c.read_byte(0x20)
+            i2c.write_byte(int(0x20),ord('b'))
+            #send = [ord("b"),1]
+            #i2c.write_i2c_block_data(0x20,0,send)
+            getg=i2c.read_byte(0x20)
+            print("start",gets,"end",getg)
+            print("One more?  0:no / 1:yes >")
+            a=int(input())
+            if(a==0):
+                break
+
+    print("Do you want to change sensors thresh? 0:no / 1:yes >")
+    a=int(input())
+    if(a==1):
+        print("start value >")
+        ths=int(input())
+        print("end   value >")
+        thg=int(input())
+        #send = [ord("c"),ths]
+        #i2c.write_i2c_block_data(0x20,0,send)
+        #send = [ord("d"),thg]
+        #i2c.write_i2c_block_data(0x20,0,send)
+        i2c.write_byte(int(0x20),ord('c'))
+        i2c.write_byte(int(0x20),ths)
+        i2c.write_byte(int(0x20),ord('d'))
+        i2c.write_byte(int(0x20),thg)
+    
     app=Qt.QApplication(sys.argv)
     watch=StopWatch()
     #watch.show()
