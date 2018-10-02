@@ -286,8 +286,10 @@ if __name__ == '__main__':
         #send = [ord("d"),thg]
         #i2c.write_i2c_block_data(0x20,0,send)
         i2c.write_byte(int(0x20),ord('c'))
+        #print(ths)
         i2c.write_byte(int(0x20),ths)
         i2c.write_byte(int(0x20),ord('d'))
+        #print(thg)
         i2c.write_byte(int(0x20),thg)
     
     app=Qt.QApplication(sys.argv)
